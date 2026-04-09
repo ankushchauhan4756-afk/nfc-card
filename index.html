@@ -1,0 +1,1227 @@
+`<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ankush Singh - Digital NFC Card</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fredoka', 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+            overflow-y: auto;
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
+
+        /* Background decorations */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            bottom: -150px;
+            left: -100px;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Main Card */
+        .nfc-card {
+            background: linear-gradient(to bottom, #ffffff 0%, #f8faff 100%);
+            border-radius: 36px;
+            overflow: hidden;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.18), 0 0 1px rgba(255, 255, 255, 0.5) inset;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: slideIn 0.7s ease;
+            border: 2.5px solid rgba(255, 255, 255, 0.4);
+            position: relative;
+        }
+
+        .nfc-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9), transparent);
+        }
+
+        .nfc-card:hover {
+            box-shadow: 0 50px 120px rgba(102, 126, 234, 0.3), 0 0 1px rgba(255, 255, 255, 0.5) inset;
+            transform: translateY(-12px) scale(1.025);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.92);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Header with gradient */
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 24px 24px;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 170px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .card-header::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+            border-radius: 50%;
+        }
+
+        .header-quote {
+            position: absolute;
+            top: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+            font-size: 18px;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.96);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            line-height: 1.2;
+            max-width: 240px;
+            width: calc(100% - 40px);
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            border-radius: 24px;
+            text-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+            backdrop-filter: blur(10px);
+            pointer-events: none;
+        }
+
+        .card-header .header-top-badge {
+            z-index: 5;
+        }
+
+        .card-header::after {
+            content: '';
+            position: absolute;
+            bottom: -40px;
+            left: -40px;
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+            border-radius: 50%;
+        }
+
+        .header-decoration {
+            position: absolute;
+            font-size: 70px;
+            opacity: 0.85;
+            animation: sway 5s ease-in-out infinite;
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+        }
+
+        .header-decoration.left {
+            left: 10px;
+            top: 15px;
+        }
+
+        .header-decoration.right {
+            right: 15px;
+            bottom: 15px;
+            font-size: 65px;
+        }
+
+        .header-top-badge {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.25);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(3deg); }
+        }
+
+        @keyframes sway {
+            0%, 100% { transform: translateX(0px); }
+            50% { transform: translateX(10px); }
+        }
+
+        /* Profile Section */
+        .profile-section {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+            padding: 40px 35px;
+            position: relative;
+            z-index: 3;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 255, 1) 100%);
+            margin-top: -60px;
+            margin-bottom: 15px;
+            border-radius: 28px;
+            margin-left: 15px;
+            margin-right: 15px;
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.25), 0 0 1px rgba(255, 255, 255, 0.8) inset;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+        }
+
+        .avatar-container {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 26px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 55px;
+            color: white;
+            box-shadow: 0 20px 50px rgba(102, 126, 234, 0.5), inset 0 -2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            border: 5px solid white;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 21px;
+            display: block;
+            position: relative;
+            z-index: 10;
+        }
+
+        .avatar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.3), transparent);
+            border-radius: 50%;
+            animation: shimmer 3s infinite;
+            z-index: 1;
+            display: none;
+        }
+
+        .avatar img ~ ::before {
+            display: none;
+        }
+
+        .avatar.no-image {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .avatar.no-image::before {
+            display: block !important;
+        }
+
+        .avatar.no-image img {
+            display: none;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translate(-50%, -50%); }
+            100% { transform: translate(50%, 50%); }
+        }
+
+        .avatar-icon {
+            position: relative;
+            z-index: 2;
+            animation: pulse-icon 2.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse-icon {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .profile-info h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 6px;
+            letter-spacing: -0.8px;
+        }
+
+        .profile-info .title {
+            font-size: 12px;
+            color: #667eea;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .profile-info .location {
+            font-size: 12px;
+            color: #555;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .profile-info .location i {
+            color: #667eea;
+            font-size: 14px;
+        }
+
+        /* Contact Details */
+        .contact-details {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            padding: 18px 20px;
+            border-top: 2px solid rgba(240, 240, 240, 0.8);
+        }
+
+        .contact-item {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            min-width: 88px;
+            padding: 14px 14px;
+            border-radius: 18px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 26px rgba(102, 126, 234, 0.12);
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .contact-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.35s ease;
+        }
+
+        .contact-item.active {
+            border-color: rgba(102, 126, 234, 0.18);
+            box-shadow: 0 14px 32px rgba(102, 126, 234, 0.18);
+        }
+
+        .contact-item.active::before {
+            transform: scaleY(1);
+            transform-origin: bottom;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-3px);
+            border-color: #e8eaff;
+        }
+
+        .contact-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: white;
+            flex-shrink: 0;
+            transition: all 0.35s ease;
+            font-weight: 700;
+            box-shadow: 0 10px 28px rgba(102, 126, 234, 0.16);
+        }
+
+        .contact-icon.phone {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .contact-icon.email {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .contact-icon.location {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .contact-item:hover .contact-icon,
+        .contact-item.active .contact-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 16px 38px rgba(102, 126, 234, 0.3);
+        }
+
+        .contact-text {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            min-width: 0;
+            max-width: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .contact-item.active .contact-text {
+            max-width: 160px;
+            opacity: 1;
+            margin-left: 6px;
+        }
+
+        .contact-text h3 {
+            font-size: 10px;
+            color: #999;
+            text-transform: uppercase;
+            font-weight: 800;
+            margin-bottom: 2px;
+            letter-spacing: 1px;
+        }
+
+        .contact-text p {
+            font-size: 13px;
+            color: #1a1a1a;
+            font-weight: 700;
+            word-break: normal;
+            line-height: 1.2;
+        }
+
+        .contact-item.phone.active {
+            transform: translate(-6px, -4px);
+        }
+
+        .contact-item.email.active {
+            transform: translate(0, -10px);
+        }
+
+        .contact-item.location.active {
+            transform: translate(6px, -4px);
+        }
+
+        /* Buttons Section */
+        .buttons-section {
+            padding: 30px 35px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            border-top: 2px solid rgba(240, 240, 240, 0.8);
+        }
+
+        .btn {
+            padding: 18px 28px;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-decoration: none;
+            font-family: 'Fredoka', 'Poppins', sans-serif;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.6px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 25px 55px rgba(102, 126, 234, 0.45);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #f8f9ff 0%, #f0f1ff 100%);
+            color: #667eea;
+            border: 3px solid #667eea;
+            font-weight: 800;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.15);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-6px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.35);
+            border-color: transparent;
+        }
+
+        .btn-secondary:active {
+            transform: translateY(-2px);
+        }
+
+        .btn i {
+            font-size: 18px;
+        }
+
+        /* Social Links */
+        .social-links {
+            padding: 35px;
+            border-top: 2px solid rgba(240, 240, 240, 0.8);
+            text-align: center;
+            background: linear-gradient(135deg, #f8f9ff 0%, #f0f1ff 100%);
+        }
+
+        .social-links p {
+            font-size: 11px;
+            color: #667eea;
+            text-transform: uppercase;
+            font-weight: 800;
+            margin-bottom: 22px;
+            letter-spacing: 2px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 18px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .social-icon {
+            width: 58px;
+            height: 58px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-decoration: none;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            border: 2px solid transparent;
+        }
+
+        .social-icon.instagram {
+            background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: white;
+        }
+
+        .social-icon.linkedin {
+            background: linear-gradient(135deg, #0077b5 0%, #005885 100%);
+            color: white;
+        }
+
+        .social-icon.whatsapp {
+            background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+            color: white;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-12px) scale(1.2) rotate(-8deg);
+            box-shadow: 0 24px 50px rgba(102, 126, 234, 0.35);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        .social-icon:active {
+            transform: translateY(-5px) scale(1.12);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            padding: 35px;
+            border-top: 2px solid rgba(240, 240, 240, 0.8);
+        }
+
+        .quick-actions p {
+            font-size: 11px;
+            color: #667eea;
+            text-transform: uppercase;
+            font-weight: 800;
+            margin-bottom: 22px;
+            letter-spacing: 2px;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            padding: 20px;
+            border: 2.5px solid #e8eaff;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-decoration: none;
+            color: inherit;
+            font-weight: 700;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.12);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.15), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .action-btn:hover::before {
+            left: 100%;
+        }
+
+        .action-btn:hover {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #f8f9ff 0%, #f0f1ff 100%);
+            transform: translateY(-10px);
+            box-shadow: 0 16px 40px rgba(102, 126, 234, 0.25);
+        }
+
+        .action-btn i {
+            font-size: 32px;
+            color: #667eea;
+            transition: all 0.4s ease;
+        }
+
+        .action-btn:hover i {
+            transform: scale(1.35) rotate(-15deg);
+            color: #764ba2;
+        }
+
+        .action-btn span {
+            font-size: 12px;
+            font-weight: 800;
+            color: #1a1a1a;
+            text-align: center;
+            letter-spacing: 0.4px;
+        }
+
+        /* NFC Indicator */
+        .nfc-indicator {
+            padding: 20px 35px;
+            background: linear-gradient(135deg, #f8f9ff 0%, #f0f1ff 100%);
+            text-align: center;
+            border-top: 2px solid rgba(232, 234, 255, 0.8);
+            border-radius: 0 0 34px 34px;
+            box-shadow: inset 0 2px 8px rgba(102, 126, 234, 0.1);
+        }
+
+        .nfc-indicator p {
+            font-size: 13px;
+            color: #667eea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+        }
+
+        .nfc-pulse {
+            width: 10px;
+            height: 10px;
+            background: #667eea;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.8);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(1.3);
+            }
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px 28px;
+            border-radius: 14px;
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.35);
+            font-size: 15px;
+            font-weight: 600;
+            animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 1000;
+            display: none;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            letter-spacing: 0.3px;
+        }
+
+        .toast.show {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(40px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0) scale(1);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .profile-section {
+                padding: 25px 20px;
+            }
+
+            .profile-info h1 {
+                font-size: 22px;
+            }
+
+            .btn {
+                font-size: 14px;
+                padding: 14px 18px;
+            }
+
+            .actions-grid {
+                gap: 12px;
+            }
+
+            .contact-details {
+                padding: 20px;
+            }
+
+            .buttons-section {
+                padding: 20px;
+            }
+
+            .social-links {
+                padding: 25px 20px;
+            }
+
+            .quick-actions {
+                padding: 25px 20px;
+            }
+
+            .card-header {
+                padding: 30px 20px 20px;
+            }
+
+            .header-illustration {
+                font-size: 70px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .container {
+                max-width: 100%;
+            }
+
+            .avatar {
+                width: 90px;
+                height: 90px;
+                font-size: 45px;
+            }
+
+            .profile-info h1 {
+                font-size: 20px;
+            }
+
+            .social-icons {
+                gap: 12px;
+            }
+
+            .social-icon {
+                width: 48px;
+                height: 48px;
+                font-size: 20px;
+            }
+
+            .profile-section {
+                margin-left: 10px;
+                margin-right: 10px;
+            }
+
+            .header-illustration {
+                font-size: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nfc-card">
+            <!-- Header with gradient and cartoonish elements -->
+            <div class="card-header">
+                <div class="header-quote">Build with passion, connect with purpose.</div>
+            </div>
+
+            <!-- Profile Section -->
+            <div class="profile-section">
+                <div class="avatar-container">
+                    <div class="avatar">
+                        <img src="jonny.jpg" alt="Ankush Singh" onerror="console.log('Image not found'); this.parentElement.classList.add('no-image');">
+                    </div>
+                </div>
+                <div class="profile-info">
+                    <div class="title">Software Developer</div>
+                    <h1>Ankush Singh</h1>
+                    <div class="location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Vijay Nagar, Sain Vihar</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Details -->
+            <div class="contact-details">
+                <div class="contact-item phone" data-contact="phone" onclick="toggleContactData('phone')">
+                    <div class="contact-icon phone">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h3>Phone</h3>
+                        <p>7983684876</p>
+                    </div>
+                </div>
+
+                <div class="contact-item email" data-contact="email" onclick="toggleContactData('email')">
+                    <div class="contact-icon email">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h3>Email</h3>
+                        <p>ankushchauhan2556@gmail.com</p>
+                    </div>
+                </div>
+
+                <div class="contact-item location" data-contact="location" onclick="toggleContactData('location')">
+                    <div class="contact-icon location">
+                        <i class="fas fa-map-pin"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h3>Location</h3>
+                        <p>Vijay Nagar, Sain Vihar</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="buttons-section">
+                <button class="btn btn-primary" onclick="saveContact()">
+                    <i class="fas fa-save"></i>
+                    Save Contact
+                </button>
+                <button class="btn btn-secondary" onclick="shareDetails()">
+                    <i class="fas fa-share-alt"></i>
+                    Share Your Details
+                </button>
+            </div>
+
+            <!-- Social Links -->
+            <div class="social-links">
+                <p>Follow</p>
+                <div class="social-icons">
+                    <a href="https://www.instagram.com/ankush_chauhan_4756" target="_blank" class="social-icon instagram" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/ankush-chauhan-1273b7381" target="_blank" class="social-icon linkedin" title="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://wa.me/7983684876" target="_blank" class="social-icon whatsapp" title="WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <p>Quick Actions</p>
+                <div class="actions-grid">
+                    <a href="tel:7983684876" class="action-btn">
+                        <i class="fas fa-phone"></i>
+                        <span>Call</span>
+                    </a>
+                    <a href="mailto:ankushchauhan2556@gmail.com" class="action-btn">
+                        <i class="fas fa-envelope"></i>
+                        <span>Email</span>
+                    </a>
+                    <a href="https://maps.google.com/?q=Vijay+Nagar,+Sain+Vihar" target="_blank" class="action-btn">
+                        <i class="fas fa-location-dot"></i>
+                        <span>Location</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- NFC Indicator -->
+            <div class="nfc-indicator">
+                <p>
+                    <span class="nfc-pulse"></span>
+                    NFC Card Ready
+                </p>
+            </div>
+
+            <!-- Professional Bio Section -->
+            <div class="quick-actions" style="padding: 25px 30px; border-top: 2px solid #f0f0f0; background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);">
+                <p style="margin-bottom: 14px;">Professional Summary</p>
+                <p style="font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 0;">Passionate software developer with expertise in building responsive web applications. Specializing in modern web technologies and creating seamless user experiences.</p>
+            </div>
+
+            <!-- Stats/Achievements Section -->
+            <div class="quick-actions" style="padding: 25px 30px; border-top: 2px solid #f0f0f0;">
+                <p style="margin-bottom: 18px;">Achievements</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+                    <div style="text-align: center; padding: 12px; background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%); border-radius: 12px; border: 1px solid #e8eaff;">
+                        <div style="font-size: 20px; font-weight: 800; color: #667eea;">5+</div>
+                        <div style="font-size: 10px; color: #999; font-weight: 600; margin-top: 4px;">Years Exp</div>
+                    </div>
+                    <div style="text-align: center; padding: 12px; background: linear-gradient(135deg, #f093fb15 0%, #f5576c15 100%); border-radius: 12px; border: 1px solid #ffe8f0;">
+                        <div style="font-size: 20px; font-weight: 800; color: #f5576c;">50+</div>
+                        <div style="font-size: 10px; color: #999; font-weight: 600; margin-top: 4px;">Projects</div>
+                    </div>
+                    <div style="text-align: center; padding: 12px; background: linear-gradient(135deg, #4facfe15 0%, #00f2fe15 100%); border-radius: 12px; border: 1px solid #d0f0ff;">
+                        <div style="font-size: 20px; font-weight: 800; color: #00f2fe;">30+</div>
+                        <div style="font-size: 10px; color: #999; font-weight: 600; margin-top: 4px;">Clients</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Certifications Section -->
+            <div class="quick-actions" style="padding: 25px 30px; border-top: 2px solid #f0f0f0;">
+                <p style="margin-bottom: 14px;">Certifications</p>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div style="display: flex; align-items: center; gap: 10px; padding: 12px; background: #f8f9ff; border-radius: 10px; border-left: 4px solid #667eea;">
+                        <i class="fas fa-certificate" style="color: #667eea; font-size: 18px;"></i>
+                        <div>
+                            <div style="font-size: 12px; font-weight: 700; color: #1a1a1a;">Web Development Certified</div>
+                            <div style="font-size: 10px; color: #999;">Issued by Udemy - 2023</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px; padding: 12px; background: #f8f9ff; border-radius: 10px; border-left: 4px solid #f5576c;">
+                        <i class="fas fa-certificate" style="color: #f5576c; font-size: 18px;"></i>
+                        <div>
+                            <div style="font-size: 12px; font-weight: 700; color: #1a1a1a;">React Specialist</div>
+                            <div style="font-size: 10px; color: #999;">Issued by React School - 2023</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Professional Downloads Section -->
+            <div class="quick-actions" style="padding: 25px 30px; border-top: 2px solid #f0f0f0; background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);">
+                <p style="margin-bottom: 14px;">Downloads</p>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <button class="btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-size: 14px; padding: 14px 20px; gap: 10px;" onclick="downloadResume()">
+                        <i class="fas fa-file-pdf"></i>
+                        Download Resume
+                    </button>
+                    <button class="btn" style="background: linear-gradient(135deg, #25d366 0%, #128c7e 100%); color: white; font-size: 14px; padding: 14px 20px; gap: 10px;" onclick="downloadQRCode()">
+                        <i class="fas fa-qrcode"></i>
+                        Download QR Code
+                    </button>
+                </div>
+            </div>
+
+            <!-- Additional Info Section -->
+            <div class="quick-actions" style="padding: 20px 30px; border-top: 2px solid #f0f0f0; background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);">
+                <p style="margin-bottom: 14px;">Skills & Expertise</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.3px;">Web Dev</span>
+                    <span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.3px;">JavaScript</span>
+                    <span style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.3px;">React</span>
+                    <span style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.3px;">UI/UX</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Enhanced Toast Notification
+        function showToast(message, duration = 3000) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, duration);
+        }
+
+        // Save Contact as vCard
+        function saveContact() {
+            const vcard = `BEGIN:VCARD
+VERSION:3.0
+FN:Ankush Singh
+TITLE:Software Developer
+TEL:+917983684876
+EMAIL:ankushchauhan2556@gmail.com
+ADR:;;Vijay Nagar, Sain Vihar;;Delhi
+URL:https://www.linkedin.com/in/ankush-chauhan-1273b7381
+NOTE:Web Developer | JavaScript | React | UI/UX
+PHOTO:https://via.placeholder.com/500
+END:VCARD`;
+            
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vcard));
+            element.setAttribute('download', 'Ankush_Singh.vcf');
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+            
+            showToast('✓ Contact saved as vCard!');
+        }
+
+        // Share Details
+        function shareDetails() {
+            const text = `📱 Hi! I'm Ankush Singh\n\n💼 Software Developer\n\n📞 Phone: +917983684876\n📧 Email: ankushchauhan2556@gmail.com\n📍 Location: Vijay Nagar, Sain Vihar, Delhi\n\n🔗 Connect:\n🔹 LinkedIn: linkedin.com/in/ankush-chauhan-1273b7381\n🔹 Instagram: @ankush_chauhan_4756\n\n💡 Skills: Web Development, JavaScript, React, UI/UX Design`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Ankush Singh - Digital Card',
+                    text: text,
+                }).catch(err => console.log('Error sharing:', err));
+            } else {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('✓ Details copied to clipboard!', 3000);
+                }).catch(err => {
+                    showToast('Failed to copy details');
+                });
+            }
+        }
+
+        // Phone Call
+        function makeCall() {
+            window.location.href = 'tel:+917983684876';
+            showToast('📞 Opening phone app...', 2000);
+        }
+
+        // Send Email
+        function sendEmail() {
+            window.location.href = 'mailto:ankushchauhan2556@gmail.com?subject=Hello Ankush&body=Hi,%0A%0AI would like to connect with you.';
+            showToast('✉️ Opening email client...', 2000);
+        }
+
+        // Open Location
+        function openLocation() {
+            window.open('https://maps.google.com/?q=Vijay+Nagar,+Delhi', '_blank');
+            showToast('📍 Opening location...', 2000);
+        }
+
+        // Contact data reveal and action toggle
+        let activeContact = null;
+
+        function toggleContactData(type) {
+            const items = document.querySelectorAll('.contact-item');
+            let clickedActive = false;
+
+            items.forEach(item => {
+                const isTarget = item.dataset.contact === type;
+                if (isTarget && item.classList.contains('active')) {
+                    clickedActive = true;
+                }
+                item.classList.toggle('active', isTarget);
+            });
+
+            if (clickedActive) {
+                if (type === 'phone') return makeCall();
+                if (type === 'email') return sendEmail();
+                if (type === 'location') return openLocation();
+            }
+
+            activeContact = clickedActive ? null : type;
+            if (!clickedActive) {
+                showToast('Tap again to use ' + type + ' action', 2000);
+            }
+        }
+
+        // Download Resume
+        function downloadResume() {
+            // Create a sample download - in production, link to actual resume
+            const link = document.createElement('a');
+            link.href = 'https://www.w3.org/WAI/WCAG21/Techniques/pdf/img/table.pdf';
+            link.download = 'Ankush_Singh_Resume.pdf';
+            link.click();
+            showToast('📄 Resume downloading...', 2000);
+        }
+
+        // Download QR Code
+        function downloadQRCode() {
+            const contactText = `BEGIN:VCARD
+VERSION:3.0
+FN:Ankush Singh
+TITLE:Software Developer
+TEL:+917983684876
+EMAIL:ankushchauhan2556@gmail.com
+ADR:;;Vijay Nagar, Sain Vihar;;Delhi
+URL:https://www.linkedin.com/in/ankush-chauhan-1273b7381
+END:VCARD`;
+            const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(contactText)}`;
+            const link = document.createElement('a');
+            link.href = qrCodeUrl;
+            link.download = 'Ankush_Singh_QR_Code.png';
+            link.click();
+            showToast('🔗 QR Code downloaded!', 2000);
+        }
+
+        // Copy Contact Info to Clipboard
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('✓ Copied to clipboard!', 2000);
+            });
+        }
+
+        // Enhanced ripple effect on interactions
+        document.querySelectorAll('.btn, .action-btn, .contact-item, .social-icon').forEach(element => {
+            element.addEventListener('mouseenter', function() {
+                this.style.userSelect = 'none';
+            });
+
+            element.addEventListener('click', function(e) {
+                // Ripple animation
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.position = 'absolute';
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+            });
+        });
+
+        // Add smooth scroll behavior
+        document.documentElement.style.scrollBehavior = 'smooth';
+
+        // Initialize any animations on page load
+        window.addEventListener('load', () => {
+            console.log('NFC Card loaded successfully!');
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 's' && e.ctrlKey) {
+                e.preventDefault();
+                saveContact();
+            }
+            if (e.key === 'c' && e.ctrlKey && e.altKey) {
+                e.preventDefault();
+                shareDetails();
+            }
+        });
+    </script>
+</body>
+</html>
